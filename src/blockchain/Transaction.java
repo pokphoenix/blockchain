@@ -14,14 +14,42 @@ public class Transaction {
     public ArrayList<TransactionInput> inputs = new ArrayList<TransactionInput>();
     public ArrayList<TransactionOutput> outputs = new ArrayList<TransactionOutput>();
 
+    public String senderName;
+    public String reciepientName;
+
     private static int sequence = 0; // a rough count of how many transactions have been generated.
 
     // Constructor:
-    public Transaction(PublicKey from, PublicKey to, float value, ArrayList<TransactionInput> inputs) {
+    public Transaction(PublicKey from, PublicKey to, float value, ArrayList<TransactionInput> inputs, String formName,
+            String toName) {
         this.sender = from;
         this.reciepient = to;
         this.value = value;
         this.inputs = inputs;
+
+        this.senderName = formName;
+        this.reciepientName = toName;
+
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public String getReciepientName() {
+        return reciepientName;
+    }
+
+    public float getValue() {
+        return value;
+    }
+
+    public ArrayList getInput() {
+        return inputs;
+    }
+
+    public ArrayList getOutput() {
+        return outputs;
     }
 
     // This Calculates the transaction hash (which will be used as its Id)
@@ -67,9 +95,11 @@ public class Transaction {
         // generate transaction outputs:
         float leftOver = getInputsValue() - value; // get value of inputs then the left over change:
         transactionId = calulateHash();
-        outputs.add(new TransactionOutput(this.reciepient, value, transactionId)); // send value to recipient
-        outputs.add(new TransactionOutput(this.sender, leftOver, transactionId)); // send the left over 'change' back to
-                                                                                  // sender
+        outputs.add(new TransactionOutput(this.reciepient, value, transactionId, this.reciepientName)); // send value to
+                                                                                                        // recipient
+        outputs.add(new TransactionOutput(this.sender, leftOver, transactionId, this.senderName)); // send the left over
+                                                                                                   // 'change' back to
+        // sender
 
         // add outputs to Unspent list
         for (TransactionOutput o : outputs) {

@@ -15,8 +15,15 @@ public class Block {
     public Block(String previousHash) {
         this.previousHash = previousHash;
         this.timeStamp = new Date().getTime();
-
         this.hash = calculateHash(); // Making sure we do this after we set the other values.
+    }
+
+    public int getNonce() {
+        return nonce;
+    }
+
+    public ArrayList getTransaction() {
+        return transactions;
     }
 
     // Calculate new hash based on blocks contents

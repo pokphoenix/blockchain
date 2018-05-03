@@ -13,12 +13,18 @@ import java.util.Map;
 public class Wallet {
     public PrivateKey privateKey;
     public PublicKey publicKey;
+    public String name;
 
     public HashMap<String, TransactionOutput> UTXOs = new HashMap<String, TransactionOutput>(); // only UTXOs owned by
                                                                                                 // this wallet.
 
-    public Wallet() {
+    public Wallet(String s) {
+        name = s;
         generateKeyPair();
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void generateKeyPair() {
@@ -55,7 +61,7 @@ public class Wallet {
     }
 
     // Generates and returns a new transaction from this wallet.
-    public Transaction sendFunds(PublicKey _recipient, float value) {
+    public Transaction sendFunds(PublicKey _recipient, float value, String _recipientName) {
         if (getBalance() < value) { // gather balance and check funds.
             System.out.println("#Not Enough funds to send transaction. Transaction Discarded.");
             return null;
@@ -72,7 +78,7 @@ public class Wallet {
                 break;
         }
 
-        Transaction newTransaction = new Transaction(publicKey, _recipient, value, inputs);
+        Transaction newTransaction = new Transaction(publicKey, _recipient, value, inputs, name, _recipientName);
         newTransaction.generateSignature(privateKey);
 
         for (TransactionInput input : inputs) {
