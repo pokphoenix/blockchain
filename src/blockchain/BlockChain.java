@@ -198,6 +198,8 @@ public class BlockChain {
             System.out.println("===========================");
         }
 
+        // Collections.shuffle(blockchain);
+
         isChainValid();
 
     }
